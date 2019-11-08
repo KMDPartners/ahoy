@@ -499,14 +499,15 @@
     return true;
   };
 
-  ahoy.track = function (name, properties) {
+  ahoy.track = function (name, properties, trackVisit) {
     // generate unique id
     var event = {
       name: name,
       properties: properties || {},
       time: (new Date()).getTime() / 1000.0,
       id: generateId(),
-      js: true
+      js: true,
+      landing_page: trackVisit ? window.location.href : null
     };
 
     ready( function () {
