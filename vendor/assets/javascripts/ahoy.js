@@ -503,7 +503,7 @@
     return true;
   };
 
-  ahoy.track = function (name, properties, trackVisit) {
+  ahoy.track = function (name, properties) {
     // generate unique id
     var event = {
       name: name,
@@ -511,7 +511,7 @@
       time: (new Date()).getTime() / 1000.0,
       id: generateId(),
       js: true,
-      landing_page: trackVisit ? window.location.href : null
+      landing_page: window.location.href
     };
 
     ready( function () {
