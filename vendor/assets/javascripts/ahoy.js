@@ -337,6 +337,10 @@
       data.visit_token = event.visit_token;
       data.visitor_token = event.visitor_token;
     }
+    if (event.landing_page) {
+      data.landing_page = event.landing_page;
+    }
+    delete event.landing_page;
     delete event.visit_token;
     delete event.visitor_token;
     return data;
@@ -506,7 +510,8 @@
       properties: properties || {},
       time: (new Date()).getTime() / 1000.0,
       id: generateId(),
-      js: true
+      js: true,
+      landing_page: window.location.href
     };
 
     ready( function () {
