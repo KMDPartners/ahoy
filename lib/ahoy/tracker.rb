@@ -16,7 +16,7 @@ module Ahoy
     end
 
     # can't use keyword arguments here
-    def track(name, properties = {}, options = {})
+    def track(name, properties = {}, options = {}, &block)
       if exclude?
         debug "Event excluded"
       elsif missing_params?
@@ -31,7 +31,8 @@ module Ahoy
           event_id: options[:id] || generate_id
         }.select { |_, v| v }
 
-        @store.track_event(data)
+        event = @store.track_event(data)
+        block.call(event) if block_given?
       end
       true
     rescue => e
