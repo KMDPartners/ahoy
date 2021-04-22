@@ -13,6 +13,7 @@ module Ahoy
       @visit_token = options[:visit_token]
       @user = options[:user]
       @options = options
+      @visit_from_param = nil
     end
 
     # can't use keyword arguments here
@@ -154,6 +155,10 @@ module Ahoy
       delete_cookie("ahoy_track")
     end
 
+    def visit_from_param?
+      @visit_from_param
+    end
+
     protected
 
     def api?
@@ -238,7 +243,11 @@ module Ahoy
       @existing_visit_token ||= begin
         token = visit_header
         token ||= visit_cookie if Ahoy.cookies && !(api? && Ahoy.protect_from_forgery && !Ahoy.force_httponly_cookies)
-        token ||= visit_param if api? || allow_visit_param?
+
+        if !token && (api? || allow_visit_param?)
+          (token = visit_param) && @visit_from_param = true
+        end
+
         token
       end
     end
