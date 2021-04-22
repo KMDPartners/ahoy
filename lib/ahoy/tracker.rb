@@ -156,7 +156,7 @@ module Ahoy
     end
 
     def visit_from_param?
-      @visit_from_param
+      visit_token && @visit_from_param
     end
 
     protected
