@@ -160,6 +160,10 @@ module Ahoy
       @options[:api]
     end
 
+    def allow_visit_param?
+      @options[:allow_visit_param]
+    end
+
     def missing_params?
       if Ahoy.cookies && api? && Ahoy.protect_from_forgery
         !(existing_visit_token && existing_visitor_token)
@@ -234,7 +238,7 @@ module Ahoy
       @existing_visit_token ||= begin
         token = visit_header
         token ||= visit_cookie if Ahoy.cookies && !(api? && Ahoy.protect_from_forgery && !Ahoy.force_httponly_cookies)
-        token ||= visit_param if api?
+        token ||= visit_param if api? || allow_visit_param?
         token
       end
     end
@@ -243,7 +247,7 @@ module Ahoy
       @existing_visitor_token ||= begin
         token = visitor_header
         token ||= visitor_cookie if Ahoy.cookies && !(api? && Ahoy.protect_from_forgery && !Ahoy.force_httponly_cookies)
-        token ||= visitor_param if api?
+        token ||= visitor_param if api? || allow_visit_param?
         token
       end
     end
