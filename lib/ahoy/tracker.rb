@@ -244,9 +244,10 @@ module Ahoy
         token = visit_header
         token ||= visit_cookie if Ahoy.cookies && !(api? && Ahoy.protect_from_forgery && !Ahoy.force_httponly_cookies)
 
-        if !token && (api? || allow_visit_param?)
-          (token = visit_param) && @visit_from_param = true
-        end
+        token ||= begin
+            @visit_from_param = true if visit_param
+            visit_param
+          end if api? || allow_visit_param?
 
         token
       end
