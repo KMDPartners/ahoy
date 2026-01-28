@@ -321,6 +321,12 @@
         xhr.onload = function() {
           if (xhr.status === 200) {
             success();
+          } else {
+            console.warn(
+              "Ahoy event failed",
+              xhr.status,
+              xhr.responseText
+            );
           }
         };
         CSRFProtection(xhr);
